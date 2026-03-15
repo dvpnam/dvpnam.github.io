@@ -563,15 +563,34 @@
 
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  const html     = document.documentElement;
-  const toggle   = document.getElementById('themeToggle');
-  const ttDark   = document.getElementById('ttDark');
-  const ttLight  = document.getElementById('ttLight');
+<script>
+  (function () {
+    var html   = document.documentElement;
+    var toggle = document.getElementById("themeToggle");
+    var ttDark  = document.getElementById("ttDark");
+    var ttLight = document.getElementById("ttLight");
 
-  // Persist preference
-  const saved = localStorage.getItem('theme') || 'dark';
-  applyTheme(saved);
+    function applyTheme(t) {
+      html.setAttribute("data-theme", t);
+      if (t === "light") {
+        ttLight.classList.add("active");
+        ttDark.classList.remove("active");
+      } else {
+        ttDark.classList.add("active");
+        ttLight.classList.remove("active");
+      }
+      try { localStorage.setItem("theme", t); } catch(e) {}
+    }
 
-  toggle.addEventListener('click', () => {
-    const next = html.dataset.theme === 'light' ?
+    var saved = "dark";
+    try { saved = localStorage.getItem("theme") || "dark"; } catch(e) {}
+    applyTheme(saved);
+
+    toggle.addEventListener("click", function () {
+      var next = html.getAttribute("data-theme") === "light" ? "dark" : "light";
+      applyTheme(next);
+    });
+  })();
+</script>
+</body>
+</html>
